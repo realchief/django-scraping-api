@@ -13,11 +13,12 @@ class CrawlerView(TemplateView):
     domain = 'apple.com'
 
     def crawl(self, request_url):
+        domain = self.kwargs['domain']
         emails = []
         print('===========Working on!, Wait!============')
         try:
             response = requests.get(request_url)
-            new_emails = re.findall(r"[a-z0-9\.\-+_]+@" + self.domain, response.text)
+            new_emails = re.findall(r"[a-z0-9\.\-+_]+@" + domain, response.text)
             if new_emails:
                 emails.append(new_emails)
         except:
@@ -37,16 +38,18 @@ class CrawlerView(TemplateView):
 
     def get(self, request, *args, **kwargs):
 
-        url_d = 'https://duckduckgo.com/?q=email+"%40"+++' + self.domain + '+++""&ia=web&count=50&first=51'
+        domain = self.kwargs['domain']
+
+        url_d = 'https://duckduckgo.com/?q=email+"%40"+++' + domain + '+++""&ia=web&count=50&first=51'
         link_3 = self.get_links(url_d)
 
-        url_y = 'https://in.search.yahoo.com/search?p=%5B%40"%20+%20' + self.domain + '%20+%20"%5D&pz=100'
+        url_y = 'https://in.search.yahoo.com/search?p=%5B%40"%20+%20' + domain + '%20+%20"%5D&pz=100'
         link_4 = self.get_links(url_y)
 
-        url_ya = 'https://yandex.com/search/?text="%40"%20%20%20' + self.domain + '%20%20%20""&lr=20983'
+        url_ya = 'https://yandex.com/search/?text="%40"%20%20%20' + domain + '%20%20%20""&lr=20983'
         link_5 = self.get_links(url_ya)
 
-        url_ask = "https://www.ask.com/web?q=email+" + self.domain + "&o=0&qo=homepageSearchBox"
+        url_ask = "https://www.ask.com/web?q=email+" + domain + "&o=0&qo=homepageSearchBox"
         link_6 = self.get_links(url_ask)
 
         # links = link_3 + link_4 + link_5 + link_6
