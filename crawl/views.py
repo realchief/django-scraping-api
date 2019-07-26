@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.views.generic import TemplateView
 
 import requests
@@ -8,11 +8,12 @@ import re
 
 
 class CrawlerView(TemplateView):
-    template_name = 'crawler.html'
+    template_name = 'crawl.html'
     domain = 'apple.com'
 
     def crawl(self, request_url):
         emails = []
+        print('===========Working on!, Wait!============')
         try:
             response = requests.get(request_url)
             new_emails = re.findall(r"[a-z0-9\.\-+_]+@" + self.domain, response.text)
@@ -47,7 +48,8 @@ class CrawlerView(TemplateView):
         url_ask = "https://www.ask.com/web?q=email+" + self.domain + "&o=0&qo=homepageSearchBox"
         link_6 = self.get_links(url_ask)
 
-        links = link_3 + link_4 + link_5 + link_6
+        # links = link_3 + link_4 + link_5 + link_6
+        links = link_6
         nodup_link = list(set(links))
         filtered_links = [i for i in nodup_link if re.search("http", i)]
         final_links = list(set(filtered_links))
@@ -67,7 +69,8 @@ class CrawlerView(TemplateView):
             'mails': final_emails
         })
         print(data)
-        return render(request, self.template_name, data)
+        # return render(request, self.template_name, data)
+        return HttpResponse(data, content_type='application/json')
 
 
 
