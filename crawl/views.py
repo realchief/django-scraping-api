@@ -10,7 +10,6 @@ import re
 
 class CrawlerView(TemplateView):
     template_name = 'crawl.html'
-    domain = 'apple.com'
 
     def crawl(self, request_url):
         domain = self.kwargs['domain']
@@ -52,8 +51,8 @@ class CrawlerView(TemplateView):
         url_ask = "https://www.ask.com/web?q=email+" + domain + "&o=0&qo=homepageSearchBox"
         link_6 = self.get_links(url_ask)
 
-        # links = link_3 + link_4 + link_5 + link_6
-        links = link_6
+        links = link_3 + link_4 + link_5 + link_6
+
         nodup_link = list(set(links))
         filtered_links = [i for i in nodup_link if re.search("http", i)]
         final_links = list(set(filtered_links))
@@ -69,7 +68,7 @@ class CrawlerView(TemplateView):
         print(final_emails)
         data = {}
         data.update({
-            'domain': self.domain,
+            'domain': domain,
             'mails': final_emails
         })
         print(data)
