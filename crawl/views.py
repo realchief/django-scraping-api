@@ -6,17 +6,14 @@ from bs4 import BeautifulSoup
 import urllib.request
 import json
 import re
-import bug
 
 
 class CrawlerView(TemplateView):
     template_name = 'crawl.html'
     domain = 'apple.com'
-    bug.trace()
 
     def crawl(self, request_url):
         emails = []
-        bug.trace()
         print('===========Working on!, Wait!============')
         try:
             response = requests.get(request_url)
@@ -55,7 +52,7 @@ class CrawlerView(TemplateView):
         # links = link_3 + link_4 + link_5 + link_6
         links = link_6
         nodup_link = list(set(links))
-        filtered_links = [i for i in nodup_link if re.sWSGIPythonPathearch("http", i)]
+        filtered_links = [i for i in nodup_link if re.search("http", i)]
         final_links = list(set(filtered_links))
         mails = [self.crawl(f) for f in final_links]
 
@@ -73,7 +70,6 @@ class CrawlerView(TemplateView):
             'mails': final_emails
         })
         print(data)
-        bug.trace()
         # return render(request, self.template_name, data)
         return HttpResponse(json.dumps(data), content_type='application/json')
 

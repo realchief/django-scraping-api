@@ -1,7 +1,8 @@
 
 from django.conf.urls import url
+from django.urls import path
 from .views import CrawlerView
 
 urlpatterns = [
-    url(r'^', CrawlerView.as_view(), name='crawl'),
+    path('crawl', CrawlerView.as_view(), name='crawl'),
 ]
