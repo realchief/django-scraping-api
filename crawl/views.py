@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 import requests
 from bs4 import BeautifulSoup
 import urllib.request
+import json
 import re
 
 
@@ -70,7 +71,7 @@ class CrawlerView(TemplateView):
         })
         print(data)
         # return render(request, self.template_name, data)
-        return HttpResponse(data, content_type='application/json')
+        return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 
